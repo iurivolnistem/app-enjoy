@@ -1,10 +1,12 @@
 import React, {useContext} from 'react';
 import { Text, Button } from 'react-native'
-import {Container} from './styles';
+import { Container, AreaPerfil, HeaderInfo, HeaderTextInfo, HeaderSubText , Infos, InfosButton, InfosButtonText, SairButtonArea, SairButton, SairButtonText } from './styles';
 
 import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '../../contexts/UserContext';
 import AsyncStorage from '@react-native-community/async-storage';
+
+import NextIcon from '../../assets/next.svg';
 
 
 export default () => {
@@ -39,11 +41,34 @@ export default () => {
         })
     }
 
+    const meusEnderecos = () => {
+        navigation.navigate('Enderecos')
+    }
+
     return (
         <Container>
-            <Text>Perfil - {user.nome}</Text>
-            <Text>{user.email}</Text>
-            <Button title="Sair" onPress={logout}></Button>
+            <HeaderInfo>
+                <HeaderTextInfo>{user.nome}</HeaderTextInfo>
+                <HeaderSubText>Meus dados</HeaderSubText>
+            </HeaderInfo>
+            <AreaPerfil>
+                <InfosButton>
+                    <InfosButtonText>{user.email}</InfosButtonText>
+                </InfosButton>
+                <InfosButton onPress={meusEnderecos}>
+                    <InfosButtonText>Meus endereços</InfosButtonText>
+                    <NextIcon width="20" height="20" fill="#FA7921" />
+                </InfosButton>
+                <InfosButton>
+                    <InfosButtonText>Meus telefones</InfosButtonText>
+                    <NextIcon width="20" height="20" fill="#FA7921" />
+                </InfosButton>
+            </AreaPerfil>
+            <SairButtonArea>
+                <SairButton onPress={logout}>
+                    <SairButtonText>Logout</SairButtonText>
+                </SairButton>
+            </SairButtonArea>
         </Container>
     );
 }

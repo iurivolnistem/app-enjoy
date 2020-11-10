@@ -41,7 +41,6 @@ const VerProdutoButtonText = styled.Text`
     color: #fff
 `;
 
-
 export default ({data}) => {
     const navigation = useNavigation();
     const url = 'http://10.0.2.2:8000/';
@@ -62,7 +61,7 @@ export default ({data}) => {
             <InfoArea>
                 <ProdutoNome>{data.nome}</ProdutoNome>
                 <ProdutoNome>R${data.valor}</ProdutoNome>
-                <VerProdutoButton>
+                <VerProdutoButton onPress={irParaProduto}>
                     <VerProdutoButtonText>Ver</VerProdutoButtonText>
                 </VerProdutoButton>
             </InfoArea>

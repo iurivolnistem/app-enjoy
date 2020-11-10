@@ -14,6 +14,7 @@ export const PageProduto = styled.View`
     border: 0.5px solid rgba(0,0,0,0.4);
     padding: 20px;
     margin: 20px;
+    border-radius: 10px;
 `;
 
 export const ProdutoNome = styled.Text`
@@ -53,6 +54,7 @@ export const AreaQuantidade = styled.Text`
     font-size: 20px;
     border: 0.5px solid rgba(0,0,0,0.4);
     padding: 10px;
+    font-weight: bold
 `;
 
 export const ProdutoValorInput = styled.TouchableOpacity`
@@ -69,8 +71,15 @@ export const ProdutoValorInput = styled.TouchableOpacity`
 export const InputText = styled.Text`
     color: #fff;
     font-size: 18px;
+    font-weight: bold
 `;
 
 export const BotaoDiminuir = styled.TouchableOpacity``;
 export const BotaoAdicionar = styled.TouchableOpacity``;
+
+export const BackButton = styled.TouchableOpacity`
+    position: absolute;
+    top: 15px;
+    left: 0;
+`;
 
