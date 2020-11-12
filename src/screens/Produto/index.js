@@ -69,7 +69,7 @@ export default () => {
         }
 
         add(item)
-        navigation.navigate('Pedido')
+        navigation.navigate('Sacola')
     }
 
     return (

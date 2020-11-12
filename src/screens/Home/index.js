@@ -47,10 +47,10 @@ export default () => {
 
     return (
         <Container>
+            <HeaderArea>
+                <HeaderTitle numberOfLines={2}>Produtos</HeaderTitle>
+            </HeaderArea>
             <Scroller refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-                <HeaderArea>
-                    <HeaderTitle numberOfLines={2}>Escolha um produto para o seu pedido:</HeaderTitle>
-                </HeaderArea>
 
                 {loading &&
                     <LoadingIcon size="large" color="#FA7921" />

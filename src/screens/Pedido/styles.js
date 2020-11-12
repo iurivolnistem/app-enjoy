@@ -18,15 +18,17 @@ export const Scroller = styled.ScrollView`
 `;
 
 export const HeaderArea = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
+    width: 100%;
+    justify-content: center;
     align-items:center;
+    padding: 10px 0;
+    background-color: #fff;
 `;
 
 export const HeaderTitle = styled.Text`
-    font-size: 24px;
+    font-size: 18px;
+    text-transform: uppercase;
     font-weight: bold;
-    color: #000;
 `;
 
 export const LoadingIcon = styled.ActivityIndicator`
@@ -43,6 +45,7 @@ export const ItemArea = styled.View`
     flex-direction: row;
     border: 0.5px solid rgba(0,0,0,0.5);
     margin-bottom: 10px;
+    position: relative;
 `;
 export const Imagem = styled.Image`
     width: 120px;
@@ -115,3 +118,26 @@ export const AreaTotalText = styled.Text`
 export const AreaFinalizarPedido = styled.View``;
 
 export const AreaPagamento = styled.View``;
+
+export const VazioMensagemArea = styled.View`
+    flex: 1;
+    background-color: #fff;
+    padding: 20px;
+    align-items:center;
+    justify-content: center;
+`;
+
+export const VazioMensagemText = styled.Text`
+    font-size: 20px;
+    font-weight: bold;
+    color: #FA7921;
+    text-align: center;
+`;
+
+export const DeleteItemButton = styled.TouchableOpacity`
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    right: 10px;
+    top: 10px;
+`;

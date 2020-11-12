@@ -21,8 +21,9 @@ export const HeaderArea = styled.View`
 `;
 
 export const HeaderAreaText = styled.Text`
-    font-size: 14px;
+    font-size: 18px;
     text-transform: uppercase;
+    font-weight: bold;
 `;
 
 export const PedidoArea = styled.View`
@@ -101,4 +102,19 @@ export const PedidoButtonText = styled.Text`
 
 export const LoadingIcon = styled.ActivityIndicator`
     margin-top: 50px;
+`;
+
+export const PedidosVazioArea = styled.View`
+    flex: 1;
+    background-color: #fff;
+    padding: 20px;
+    align-items:center;
+    justify-content: center;
+`;
+
+export const PedidosVazioText = styled.Text`
+    font-size: 20px;
+    font-weight: bold;
+    color: #FA7921;
+    text-align: center;
 `;

@@ -25,44 +25,56 @@ import {
     AreaTotalText,
     AreaPedido,
     AreaFinalizarPedido,
-    AreaPagamento
+    AreaPagamento,
+    VazioMensagemArea,
+    VazioMensagemText, 
+    DeleteItemButton,
 } from './styles';
+
+import RemoveIcon from '../../assets/delete.svg';
 
 export default () => {
 
-    const { add, cart, total } = useCart();
+    const { add, cart, total, remove, removeTodosItems } = useCart();
     const {state:user} = useContext(UserContext);
 
-    const enviarPedido = async () => {
+    useEffect(() => {
+    }, [cart])
 
+    const enviarPedido = async () => {
+        let array = [];
         let produtos = {
             'id': '',
             'qtde': ''
-        }
-        let array = []
-        cart.map((item) => {
-            array.push(produtos = {
-                'id': item.id,
-                'qtde': item.quantidade
-            })
-                     
-        })
+        };
         let pedido = {
             id_cliente: user.id,
             valor: total,
             array
         }
+        cart.map((item) => {
+            array.push(produtos = {
+                'id': item.id,
+                'qtde': item.quantidade
+            })      
+        })
         let response = await Api.sendPedido(pedido);
-        console.log(response);
+        if(response.error == ''){
+            removeTodosItems();
+        }
+        else{
+            alert(response.mensagem);
+        }
     }
 
     return (
         <Container>
-            <AreaPedido>
+            <HeaderArea>
+                <HeaderTitle numberOfLines={2}>Sacola</HeaderTitle>
+            </HeaderArea>
+            { Object.keys(cart).length > 0 ?
+                <AreaPedido>
                 <Scroller>
-                    <HeaderArea>
-                        <HeaderTitle numberOfLines={2}>Revise seu pedido:</HeaderTitle>
-                    </HeaderArea>
                     <ListArea>
                         {cart.map((item, index) => (
                             <ItemArea key={index}>
@@ -72,12 +84,15 @@ export default () => {
                                     <ItemValor>R${item.valor}</ItemValor>
                                     <ItemQuantidade>Quantidade: {item.quantidade}</ItemQuantidade>
                                 </ItemAreaInfo>
+                                <DeleteItemButton onPress={() => remove(index)}>
+                                    <RemoveIcon width="15" height="15" fill="#FA7921"/>
+                                </DeleteItemButton>
                             </ItemArea>
                         ))}
                     </ListArea>
+                    
+                    
                 </Scroller>
-
-
                 <AreaFinalizarPedido>
                     <AreaPagamento>
                     </AreaPagamento>
@@ -85,15 +100,17 @@ export default () => {
                         <AreaTotal>
                             <AreaTotalText>Total: R${total.toFixed(2)}</AreaTotalText>
                         </AreaTotal>
-                        {
-                            total == 0 ? <Text>Nenhum produto na sacola</Text> :
-                            <ButtonPedido onPress={enviarPedido}>
-                                <ButtonPedidoText>Finalizar Pedido</ButtonPedidoText>
-                            </ButtonPedido>
-                        }
+                        <ButtonPedido onPress={enviarPedido}>
+                            <ButtonPedidoText>Finalizar Pedido</ButtonPedidoText>
+                        </ButtonPedido>
                     </AreaButton>
                 </AreaFinalizarPedido>
             </AreaPedido>
+            :
+            <VazioMensagemArea>
+                <VazioMensagemText>Você ainda não tem produtos no carrinho :(</VazioMensagemText>
+            </VazioMensagemArea>
+            }
         </Container>
     );
 }

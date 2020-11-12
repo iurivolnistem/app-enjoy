@@ -23,9 +23,22 @@ export default function CartProvider ({children}){
         setCart([...newCart]);
     }
 
+    function removeTodosItems (){
+        setCart([]);
+    }
+
+    function remove(index){
+        let newCart = cart.filter((item, i) => i !== index)
+        
+        setCart([...newCart]);
+    }
+
     const store = {
         add,
-        cart, total
+        cart, 
+        total,
+        remove,
+        removeTodosItems
     }
 
     return (
@@ -42,11 +55,15 @@ export function useCart(){
         cart,
         add,
         total,
+        remove,
+        removeTodosItems
     } = context
 
     return {
         cart,
         add,
-        total
+        total,
+        remove,
+        removeTodosItems
     }
 }

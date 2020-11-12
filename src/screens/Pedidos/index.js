@@ -3,7 +3,7 @@ import { RefreshControl } from 'react-native'
 import {UserContext} from '../../contexts/UserContext';
 import Moment from 'moment/min/moment-with-locales';
 import MomentTz from 'moment-timezone';
-import {Container, HeaderArea, HeaderAreaText, Scroller, PedidoArea, PedidoDataTexto, PedidoHeader, PedidoHeaderTexto, PedidoHeaderSubTexto, PedidoItensArea, ItemArea ,ItemQuantidade, ItemNomeTexto, PedidoButtonArea, PedidoButton, PedidoButtonText, LoadingIcon} from './styles';
+import {Container, HeaderArea, HeaderAreaText, Scroller, PedidoArea, PedidoDataTexto, PedidoHeader, PedidoHeaderTexto, PedidoHeaderSubTexto, PedidoItensArea, ItemArea ,ItemQuantidade, ItemNomeTexto, PedidoButtonArea, PedidoButton, PedidoButtonText, LoadingIcon, PedidosVazioArea, PedidosVazioText} from './styles';
 
 import Api from '../../Api';
 
@@ -12,6 +12,7 @@ export default () => {
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const [listaPedidos, setListaPedidos] = useState([]);
+    const [vazioMensagem,setVazioMensagem] = useState('');
     const {state:user} = useContext(UserContext);
 
     useEffect(() => {
@@ -26,9 +27,11 @@ export default () => {
         if(res.error == ''){
             console.log(res)
             setListaPedidos(res.pedidos);
+            setVazioMensagem('');
         }
         else{
-            alert('Erro', res.error)
+            setListaPedidos([]);
+            setVazioMensagem(res.mensagem);
         }
         setLoading(false);
     }
@@ -52,39 +55,47 @@ export default () => {
                     Pedidos
                 </HeaderAreaText>
             </HeaderArea>
+            <Scroller refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+            {
+
+                listaPedidos == '' ?
+                <PedidosVazioArea>
+                    <PedidosVazioText>{vazioMensagem}</PedidosVazioText>
+                </PedidosVazioArea>
+
+                :
+
+                listaPedidos.map((item, index) => (
+
+                <PedidoArea key={index}>
+                    <PedidoDataTexto>{converterData(item.created_at)}</PedidoDataTexto>
+                    <PedidoHeader>
+                        <PedidoHeaderTexto>Pedido #{item.id}</PedidoHeaderTexto>
+                        <PedidoHeaderSubTexto>Pedido {item.status == 0 ? 'Aguardando' : item.status == 1 ? 'Preparando' : item.status == 2 ? 'Saiu para entrega' : item.status == 3 ? 'Entregue' : 'Cancelado'}</PedidoHeaderSubTexto>
+                    </PedidoHeader>
+                    <PedidoItensArea>
+                        {
+                            item.produtos.map((produto, key) => (
+                                <ItemArea key={key}>
+                                    <ItemQuantidade>{produto.pivot.quantidade}</ItemQuantidade>
+                                    <ItemNomeTexto>{produto.nome}</ItemNomeTexto>
+                                </ItemArea>
+                            ))
+                        }
+                    </PedidoItensArea>
+                    <PedidoButtonArea>
+                        <PedidoButton>
+                            <PedidoButtonText>Detalhes</PedidoButtonText>
+                        </PedidoButton>
+                    </PedidoButtonArea>
+                </PedidoArea>
+
+                )) 
+            }
             {loading &&
                 <LoadingIcon size="large" color="#FA7921" />
             }
-            <Scroller refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-                {
-                    listaPedidos.map((item, index) => (
-
-                    <PedidoArea key={index}>
-                        <PedidoDataTexto>{converterData(item.created_at)}</PedidoDataTexto>
-                        <PedidoHeader>
-                            <PedidoHeaderTexto>Pedido {item.id}#</PedidoHeaderTexto>
-                            <PedidoHeaderSubTexto>Pedido {item.status}</PedidoHeaderSubTexto>
-                        </PedidoHeader>
-                        <PedidoItensArea>
-                            {
-                                item.produtos.map((produto, key) => (
-                                    <ItemArea key={key}>
-                                        <ItemQuantidade>{produto.pivot.quantidade}</ItemQuantidade>
-                                        <ItemNomeTexto>{produto.nome}</ItemNomeTexto>
-                                    </ItemArea>
-                                ))
-                            }
-                        </PedidoItensArea>
-                        <PedidoButtonArea>
-                            <PedidoButton>
-                                <PedidoButtonText>Detalhes</PedidoButtonText>
-                            </PedidoButton>
-                        </PedidoButtonArea>
-                    </PedidoArea>
-
-                    ))
-                }
-            </Scroller>
+        </Scroller>
         </Container>
     );
 }

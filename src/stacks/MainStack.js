@@ -23,7 +23,7 @@ export default () => {
             <Stack.Screen name="Cadastrar" component={Cadastrar}/>
             <Stack.Screen name="MainTab" component={MainTab}/>
             <Stack.Screen name="Produto" component={Produto}/>
-            <Stack.Screen name="Pedido" component={Pedido}/>
+            {/* <Stack.Screen name="Pedido" component={Pedido}/> */}
             <Stack.Screen name="Enderecos" component={Enderecos}/>
             <Stack.Screen name="Telefones" component={Telefones}/>
         </Stack.Navigator>

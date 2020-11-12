@@ -8,19 +8,21 @@ export const Container = styled.SafeAreaView`
 
 export const Scroller = styled.ScrollView`
     flex: 1;
-    padding: 20px;
+    padding: 10px 20px;
 `;
 
 export const HeaderArea = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
+    width: 100%;
+    justify-content: center;
     align-items:center;
+    padding: 10px 0;
+    background-color: #fff;
 `;
 
 export const HeaderTitle = styled.Text`
-    font-size: 24px;
+    font-size: 18px;
+    text-transform: uppercase;
     font-weight: bold;
-    color: #000;
 `;
 
 export const LoadingIcon = styled.ActivityIndicator`
@@ -28,6 +30,6 @@ export const LoadingIcon = styled.ActivityIndicator`
 `;
 
 export const ListArea = styled.View`
-    margin-top: 30px;
+    margin-top: 20px;
     margin-bottom: 20px;
 `;
