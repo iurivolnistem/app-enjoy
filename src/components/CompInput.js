@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import TextInputMask from 'react-native-text-input-mask';
 
 const InputArea = styled.View`
     width: 100%;
@@ -12,23 +13,19 @@ const InputArea = styled.View`
     margin-bottom: 15px;
 `;
 
-const Input = styled.TextInput`
-    flex: 1;
-    font-size: 16px;
-    color: #fff;
-    margin-left: 10px;
-`;
-
-export default ({IconSvg, placeholder, value, onChangeText, password}) => {
+export default ({IconSvg, placeholder, value, onChangeText, password, mascara, lenght}) => {
     return (
         <InputArea>
             <IconSvg width="24" height="24" fill="#ffffff" />
-            <Input 
+            <TextInputMask
+                style={{color: '#fff', width: '100%'}} 
                 placeholder={placeholder} 
                 placeholderTextColor="#fff"
                 value={value}
                 onChangeText={onChangeText}
                 secureTextEntry={password}
+                mask={mascara}
+                maxLength={lenght}
             />
         </InputArea>
     );

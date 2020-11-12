@@ -8,6 +8,7 @@ import MainTab from '../stacks/MainTab';
 import Produto from '../screens/Produto';
 import Pedido from '../screens/Pedido';
 import Enderecos from '../screens/Enderecos';
+import Telefones from '../screens/Telefones';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ export default () => {
             <Stack.Screen name="Produto" component={Produto}/>
             <Stack.Screen name="Pedido" component={Pedido}/>
             <Stack.Screen name="Enderecos" component={Enderecos}/>
+            <Stack.Screen name="Telefones" component={Telefones}/>
         </Stack.Navigator>
     );
 }

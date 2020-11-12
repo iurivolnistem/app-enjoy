@@ -113,7 +113,6 @@ export default {
             body: JSON.stringify(params)
         });
         const json = await req.json();
-        console.log(json);
         return json;
     }, 
 
@@ -140,4 +139,56 @@ export default {
         const json = await req.json();
         return json;
     },
+
+    cadastraTelefone: async (params) => {
+        const req = await fetch(`${BASE_API}/cadastrar/telefone`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(params)
+        });
+        const json = await req.json();
+        console.log(json);
+        return json;
+    },
+    
+    excluirTelefone: async (id, id_cliente) => {
+        const req = await fetch(`${BASE_API}/excluir/telefone/${id}/${id_cliente}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+        });
+        const json = await req.json();
+        return json;
+    },
+
+    activeTelefone: async (id, id_cliente) => {
+        const req = await fetch(`${BASE_API}/telefone/ativo/${id}/${id_cliente}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(id, id_cliente)
+        });
+        const json = await req.json();
+        console.log(json);
+        return json;
+    },
+
+    getPedidos: async (id) => {
+        const req = await fetch(`${BASE_API}/pedidos/cliente/${id}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+        });
+        const json = await req.json();
+        return json;
+    }
 };

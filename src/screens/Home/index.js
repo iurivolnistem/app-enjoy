@@ -49,7 +49,7 @@ export default () => {
         <Container>
             <Scroller refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                 <HeaderArea>
-                    <HeaderTitle numberOfLines={2}>Selecione os produtos do seu pedido:</HeaderTitle>
+                    <HeaderTitle numberOfLines={2}>Escolha um produto para o seu pedido:</HeaderTitle>
                 </HeaderArea>
 
                 {loading &&

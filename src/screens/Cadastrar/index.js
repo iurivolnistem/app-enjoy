@@ -76,6 +76,7 @@ export default () => {
                     value={nome}
                     onChangeText={texto => setNome(texto)}
                     password={false}
+                    lenght={100}
                     />
 
                 <CompInput 
@@ -84,6 +85,8 @@ export default () => {
                     value={cpf}
                     onChangeText={texto => setCpf(texto)}
                     password={false}
+                    mascara={"[000].[000].[000]-[00]"}
+                    lenght={14}
                     />
 
                 <CompInput 
@@ -92,6 +95,7 @@ export default () => {
                     value={email}
                     onChangeText={texto => setEmail(texto)}
                     password={false}
+                    lenght={100}
                     />
 
                 <CompInput 
@@ -100,6 +104,7 @@ export default () => {
                     value={senha}
                     onChangeText={texto => setSenha(texto)}
                     password={true}
+                    lenght={16}
                     />
 
                 <CompInput 
@@ -108,6 +113,7 @@ export default () => {
                     value={confirmaSenha}
                     onChangeText={texto => setConfirmaSenha(texto)}
                     password={true}
+                    lenght={16}
                     />
 
                 <CustomButton onPress={botaoLoginClick}>

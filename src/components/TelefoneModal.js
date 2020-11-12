@@ -24,7 +24,7 @@ const ModalBody = styled.View`
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     min-height: 300px;
-    padding: 10px 20px 40px 20px;
+    padding: 10px 20px 20px 20px;
 `;
 
 const Scroller = styled.ScrollView``;
@@ -71,27 +71,11 @@ export default ({visible, closeModal }) => {
 
     const {state:user} = useContext(UserContext);
     const[nome, setNome] = useState('');
-    const[cep, setCep] = useState('');
-    const[logradouro, setLogradouro] = useState('');
-    const[bairro, setBairro] = useState('');
-    const[cidade, setCidade] = useState('');
-    const[estado, setEstado] = useState('');
     const[numero, setNumero] = useState('');
-    const[complemento, setComplemento] = useState('');
 
-
-    const buscarCep = async () => {
-        let response = await Api.buscarCep(cep)
-
-        setLogradouro(response.logradouro);
-        response.bairro == '' ? setBairro('Centro') : setBairro(response.bairro);
-        setCidade(response.localidade);
-        setEstado(response.uf);
-    }
-
-    const cadastrarEndereco = async () => {
-        if(cep != '' && logradouro != '' && numero != '' && cidade != '' && estado != ''){
-            let response = await Api.cadastraEndereco({nome: nome, cep: cep, logradouro: logradouro, bairro: bairro, numero: numero, cidade: cidade, estado: estado, complemento: complemento, id_cliente: user.id});
+    const cadastrarTelefone = async () => {
+        if(nome != '' && numero != ''){
+            let response = await Api.cadastraTelefone({nome: nome, numero: numero, id_cliente: user.id});
             if(response.error == ''){
                 alert(response.mensagem)
                 closeModal();
@@ -103,11 +87,10 @@ export default ({visible, closeModal }) => {
             }
         }
         else{
-            alert('Os campos cep, logradouro, número, cidade e estado não podem estar vazios!');
+            alert('Os campos de nome e número não podem estar vazios!');
         }
     }
 
-    
 
     return (
 
@@ -120,32 +103,28 @@ export default ({visible, closeModal }) => {
                     <Scroller>
 
                         <LinhaForm>
-                            <EnderecoInput style={{width: '100%'}} placeholderTextColor="#fff" placeholder="Digite um nome: Ex - Casa" value={nome} onChangeText={t => setNome(t)} maxLength={20} />
+                            <EnderecoInput 
+                            style={{width: '100%'}} 
+                            placeholderTextColor="#fff" 
+                            placeholder="Digite um nome: Ex - Casa" 
+                            value={nome} 
+                            onChangeText={t => setNome(t)} 
+                            maxLength={20} />
                         </LinhaForm>
                         
                         <LinhaForm>
-                            <TextInputMask style={{...styles.input, width: '50%'}} placeholderTextColor="#fff" placeholder="Digite seu Cep" maxLength={9} value={cep} onChangeText={t => setCep(t)} onBlur={buscarCep} mask={'[00000]-[000]'} />
-                            <EnderecoInput style={{width: '45%'}} placeholderTextColor="#fff" placeholder="Digite o número" value={numero} onChangeText={t => setNumero(t)} maxLength={10} />
-                        </LinhaForm>
-
-                        <LinhaForm>
-                            <EnderecoInput style={{width: '100%'}} placeholderTextColor="#fff" placeholder="Digite seu Logradouro" value={logradouro} onChangeText={t => setLogradouro(t)} maxLength={100} />
-                        </LinhaForm>
-
-                        <LinhaForm>
-                            <EnderecoInput style={{width: '100%'}} placeholderTextColor="#fff" placeholder="Digite seu Bairro" value={bairro} onChangeText={t => setBairro(t)} maxLength={100} />
-                        </LinhaForm>
-
-                        <LinhaForm>
-                            <EnderecoInput style={{width: '60%'}} placeholderTextColor="#fff" placeholder="Digite sua Cidade" value={cidade} onChangeText={t => setCidade(t)} maxLength={50} />
-                            <EnderecoInput style={{width: '35%'}} placeholderTextColor="#fff" placeholder="Digite o Estado" value={estado} onChangeText={t => setEstado(t)} maxLength={2} />
+                            <TextInputMask 
+                            placeholder="Digite o seu telefone"
+                            placeholderTextColor="#fff"
+                            style={{...styles.input, width: '100%'}}
+                            value={numero}
+                            onChangeText={t => setNumero(t)}
+                            maxLength={14}
+                            mask={"([00])[0000]-[00000]"}
+                            keyboardType="numeric" />
                         </LinhaForm>
                         
-                        <LinhaForm>
-                            <EnderecoInput style={{width: '100%'}} placeholderTextColor="#fff" placeholder="Digite o Complemento" value={complemento} onChangeText={t => setComplemento(t)} maxLength={100} />
-                        </LinhaForm>
-                        
-                        <CadastrarButton onPress={cadastrarEndereco}>
+                        <CadastrarButton onPress={cadastrarTelefone}>
                             <CadastrarButtonText>
                                 Cadastrar
                             </CadastrarButtonText>

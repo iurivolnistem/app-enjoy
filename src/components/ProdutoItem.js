@@ -3,17 +3,18 @@ import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native'
 
 const Area = styled.TouchableOpacity`
-    background-color: rgb(250, 121, 33);
+    background-color: #fff;
     margin-bottom: 20px;
-    border-radius: 20px;
+    border-radius: 5px;
     padding: 15px;
     flex-direction: row;
+    border: 0.5px solid rgba(0,0,0,0.4);
 `;
 
 const Imagem = styled.Image`
     width: 88px;
     height: 88px;
-    border-radius: 20px;
+    border-radius: 5px;
 `;
 
 const InfoArea = styled.View`
@@ -24,13 +25,13 @@ const InfoArea = styled.View`
 const ProdutoNome = styled.Text`
     font-size: 17px;
     font-weight: bold;
-    color: #fff;
+    color: #000;
 `;
 
 const VerProdutoButton = styled.TouchableOpacity`
     width: 85px;
     height: 26px;
-    border: 1px solid #fff;
+    border: 1px solid #000;
     border-radius: 10px;
     justify-content: center;
     align-items: center;
@@ -38,7 +39,7 @@ const VerProdutoButton = styled.TouchableOpacity`
 
 const VerProdutoButtonText = styled.Text`
     font-size: 13px;
-    color: #fff
+    color: #000
 `;
 
 export default ({data}) => {

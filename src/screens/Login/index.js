@@ -74,6 +74,7 @@ export default () => {
                     value={email}
                     onChangeText={t => setEmail(t)}
                     password={false}
+                    lenght={100}
                     />
 
                 <CompInput 
@@ -82,6 +83,7 @@ export default () => {
                     value={senha}
                     onChangeText={t => setSenha(t)}
                     password={true}
+                    lenght={16}
                     />
 
                 <CustomButton onPress={botaoLoginClick}>

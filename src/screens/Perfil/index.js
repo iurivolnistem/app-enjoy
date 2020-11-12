@@ -45,6 +45,10 @@ export default () => {
         navigation.navigate('Enderecos')
     }
 
+    const meusTelefones = () => {
+        navigation.navigate('Telefones')
+    }
+
     return (
         <Container>
             <HeaderInfo>
@@ -59,7 +63,7 @@ export default () => {
                     <InfosButtonText>Meus endereços</InfosButtonText>
                     <NextIcon width="20" height="20" fill="#FA7921" />
                 </InfosButton>
-                <InfosButton>
+                <InfosButton onPress={meusTelefones}>
                     <InfosButtonText>Meus telefones</InfosButtonText>
                     <NextIcon width="20" height="20" fill="#FA7921" />
                 </InfosButton>

@@ -85,9 +85,12 @@ export default () => {
                         <AreaTotal>
                             <AreaTotalText>Total: R${total.toFixed(2)}</AreaTotalText>
                         </AreaTotal>
-                        <ButtonPedido onPress={enviarPedido}>
-                            <ButtonPedidoText>Finalizar Pedido</ButtonPedidoText>
-                        </ButtonPedido>
+                        {
+                            total == 0 ? <Text>Nenhum produto na sacola</Text> :
+                            <ButtonPedido onPress={enviarPedido}>
+                                <ButtonPedidoText>Finalizar Pedido</ButtonPedidoText>
+                            </ButtonPedido>
+                        }
                     </AreaButton>
                 </AreaFinalizarPedido>
             </AreaPedido>
