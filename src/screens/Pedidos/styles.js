@@ -9,7 +9,7 @@ export const Container = styled.SafeAreaView`
 export const Scroller = styled.ScrollView`
     flex: 1;
     padding: 20px;
-    background-color: #EEF0F2
+    background-color: #EEF0F2;
 `;
 
 export const HeaderArea = styled.View`
@@ -29,10 +29,13 @@ export const HeaderAreaText = styled.Text`
 export const PedidoArea = styled.View`
     width: 100%;
     padding: 10px;
+    margin-bottom: 20px;
 `;
 
 export const PedidoDataTexto = styled.Text`
     color: #000;
+    text-transform: capitalize;
+    font-weight: bold;
 `;
 
 export const PedidoHeader = styled.View`

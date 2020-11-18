@@ -190,5 +190,29 @@ export default {
         });
         const json = await req.json();
         return json;
+    },
+
+    getPedido: async (pedidoID) => {
+        const req = await fetch(`${BASE_API}/pedido/${pedidoID}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+        });
+        const json = await req.json();
+        return json;
+    },
+
+    confirmaEntrega: async (pedidoID) => {
+        const req = await fetch(`${BASE_API}/pedido/confirmarEntrega/${pedidoID}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+        });
+        const json = await req.json();
+        return json;
     }
 };

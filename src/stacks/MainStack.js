@@ -6,7 +6,7 @@ import Login from '../screens/Login';
 import Cadastrar from '../screens/Cadastrar'
 import MainTab from '../stacks/MainTab';
 import Produto from '../screens/Produto';
-import Pedido from '../screens/Pedido';
+import Detalhes from '../screens/Detalhe';
 import Enderecos from '../screens/Enderecos';
 import Telefones from '../screens/Telefones';
 
@@ -23,7 +23,7 @@ export default () => {
             <Stack.Screen name="Cadastrar" component={Cadastrar}/>
             <Stack.Screen name="MainTab" component={MainTab}/>
             <Stack.Screen name="Produto" component={Produto}/>
-            {/* <Stack.Screen name="Pedido" component={Pedido}/> */}
+            <Stack.Screen name="Detalhes" component={Detalhes}/>
             <Stack.Screen name="Enderecos" component={Enderecos}/>
             <Stack.Screen name="Telefones" component={Telefones}/>
         </Stack.Navigator>

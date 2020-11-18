@@ -29,6 +29,8 @@ import {
     VazioMensagemArea,
     VazioMensagemText, 
     DeleteItemButton,
+    SelectOpcao,
+    InputTroco
 } from './styles';
 
 import RemoveIcon from '../../assets/delete.svg';
@@ -37,9 +39,25 @@ export default () => {
 
     const { add, cart, total, remove, removeTodosItems } = useCart();
     const {state:user} = useContext(UserContext);
+    const [selectedValue, setSelectedValue] = useState('1');
+    const [troco, setTroco] = useState('');
 
     useEffect(() => {
     }, [cart])
+
+    const verificarPedidoEnviar = async () => {
+        if(selectedValue == '3'){
+            if(troco != '' && troco > 0 && troco > total){
+                enviarPedido()
+            }
+            else{
+                alert('O campo de troco precisa ser maior que o valor do pedido');
+            }
+        }
+        else{
+            enviarPedido();
+        }
+    }
 
     const enviarPedido = async () => {
         let array = [];
@@ -50,6 +68,8 @@ export default () => {
         let pedido = {
             id_cliente: user.id,
             valor: total,
+            pagamento: selectedValue,
+            troco: troco,
             array
         }
         cart.map((item) => {
@@ -61,6 +81,7 @@ export default () => {
         let response = await Api.sendPedido(pedido);
         if(response.error == ''){
             removeTodosItems();
+            alert('Pedido Enviado!');
         }
         else{
             alert(response.mensagem);
@@ -94,13 +115,22 @@ export default () => {
                     
                 </Scroller>
                 <AreaFinalizarPedido>
-                    <AreaPagamento>
+                    <AreaPagamento style={{flexDirection: selectedValue == '3' ? 'row' : 'column'}}>
+                        <SelectOpcao style={{width: selectedValue == '3' ? '55%' : '100%'}} selectedValue={selectedValue} onValueChange={(itemValue, index) => setSelectedValue(itemValue)}>
+                            <SelectOpcao.Item label="Cartão de crédito" value="1"></SelectOpcao.Item>
+                            <SelectOpcao.Item label="Dinheiro sem troco" value="2"></SelectOpcao.Item>
+                            <SelectOpcao.Item label="Dinheiro com troco" value="3"></SelectOpcao.Item>
+                        </SelectOpcao>
+                        {
+                            selectedValue == '3'  &&
+                            <InputTroco style={{width: '45%'}} value={troco} onChangeText={t => setTroco(t)} placeholder="Troco" ></InputTroco>
+                        }
                     </AreaPagamento>
                     <AreaButton>
                         <AreaTotal>
                             <AreaTotalText>Total: R${total.toFixed(2)}</AreaTotalText>
                         </AreaTotal>
-                        <ButtonPedido onPress={enviarPedido}>
+                        <ButtonPedido onPress={verificarPedidoEnviar}>
                             <ButtonPedidoText>Finalizar Pedido</ButtonPedidoText>
                         </ButtonPedido>
                     </AreaButton>

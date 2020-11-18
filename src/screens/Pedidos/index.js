@@ -1,6 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react';
 import { RefreshControl } from 'react-native'
 import {UserContext} from '../../contexts/UserContext';
+import { useNavigation } from '@react-navigation/native';
 import Moment from 'moment/min/moment-with-locales';
 import MomentTz from 'moment-timezone';
 import {Container, HeaderArea, HeaderAreaText, Scroller, PedidoArea, PedidoDataTexto, PedidoHeader, PedidoHeaderTexto, PedidoHeaderSubTexto, PedidoItensArea, ItemArea ,ItemQuantidade, ItemNomeTexto, PedidoButtonArea, PedidoButton, PedidoButtonText, LoadingIcon, PedidosVazioArea, PedidosVazioText} from './styles';
@@ -14,6 +15,7 @@ export default () => {
     const [listaPedidos, setListaPedidos] = useState([]);
     const [vazioMensagem,setVazioMensagem] = useState('');
     const {state:user} = useContext(UserContext);
+    const navigation = useNavigation();
 
     useEffect(() => {
         getPedidos();
@@ -25,7 +27,6 @@ export default () => {
 
         let res = await Api.getPedidos(user.id)
         if(res.error == ''){
-            console.log(res)
             setListaPedidos(res.pedidos);
             setVazioMensagem('');
         }
@@ -46,6 +47,11 @@ export default () => {
         let newData = Moment(dataTz).locale('pt-br').format('llll');
 
         return newData;
+    }
+
+    const verDetalhes = (pedidoID) => {
+        navigation.navigate('Detalhes', {id: pedidoID})
+        // console.log(pedidoID);
     }
 
     return (
@@ -75,6 +81,14 @@ export default () => {
                     </PedidoHeader>
                     <PedidoItensArea>
                         {
+                            item.produtos.length > 2 ? 
+                            
+                            <ItemArea>
+                                <ItemNomeTexto>{item.produtos.length} itens </ItemNomeTexto>
+                            </ItemArea>
+
+                            :
+
                             item.produtos.map((produto, key) => (
                                 <ItemArea key={key}>
                                     <ItemQuantidade>{produto.pivot.quantidade}</ItemQuantidade>
@@ -84,8 +98,8 @@ export default () => {
                         }
                     </PedidoItensArea>
                     <PedidoButtonArea>
-                        <PedidoButton>
-                            <PedidoButtonText>Detalhes</PedidoButtonText>
+                        <PedidoButton onPress={() => verDetalhes(item.id)}>
+                    <PedidoButtonText>Detalhes</PedidoButtonText>
                         </PedidoButton>
                     </PedidoButtonArea>
                 </PedidoArea>
