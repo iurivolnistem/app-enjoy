@@ -32,8 +32,6 @@ export default () => {
             response.pedido.produtos.map((item, index) => {
                 listaProdutos.push(item);
             })
-
-            console.log(response.pedido)
         }
         else{
             alert(response.mensagem)
@@ -67,7 +65,6 @@ export default () => {
 
     const confirmarEntrega = async (pedidoID) => {
         let res = await Api.confirmaEntrega(pedidoID);
-        console.log(res);
         alert(res.mensagem);
         getPedido();
     }

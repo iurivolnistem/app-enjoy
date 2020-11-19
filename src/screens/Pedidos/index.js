@@ -51,7 +51,6 @@ export default () => {
 
     const verDetalhes = (pedidoID) => {
         navigation.navigate('Detalhes', {id: pedidoID})
-        // console.log(pedidoID);
     }
 
     return (

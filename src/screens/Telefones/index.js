@@ -55,7 +55,6 @@ export default () => {
             setListaTelefones(res.telefones);
         }
         else{
-            console.log(res)
             alert(res.error)
         }
 

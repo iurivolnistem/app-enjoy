@@ -87,7 +87,6 @@ export default {
             body: JSON.stringify(id, id_cliente)
         });
         const json = await req.json();
-        console.log(json);
         return json;
     },
 
@@ -150,7 +149,6 @@ export default {
             body: JSON.stringify(params)
         });
         const json = await req.json();
-        console.log(json);
         return json;
     },
     
@@ -176,7 +174,6 @@ export default {
             body: JSON.stringify(id, id_cliente)
         });
         const json = await req.json();
-        console.log(json);
         return json;
     },
 

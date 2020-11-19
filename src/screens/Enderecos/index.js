@@ -77,7 +77,7 @@ export default () => {
     const ativarEndereco = async (id) => {
         let res = await Api.activeEndereco(id, user.id);
         if(res.error == ''){
-            console.log(res.mensagem);
+            alert(res.mensagem);
         }
         else{
             alert(res.error)
