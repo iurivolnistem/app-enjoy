@@ -11,7 +11,7 @@ import BackIcon from '../../assets/back.svg';
 
 export default () => {
 
-    const { add } = useCart();
+    const { add, cart } = useCart();
     const navigation = useNavigation();
     const route = useRoute();
     const [loading, setLoading] = useState(false);
@@ -67,8 +67,7 @@ export default () => {
             valor: produtoInfo.valor,
             quantidade: quantidade
         }
-
-        add(item)
+        add(item);
         navigation.navigate('Sacola')
     }
 

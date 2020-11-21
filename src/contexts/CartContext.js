@@ -14,11 +14,21 @@ export default function CartProvider ({children}){
         })
 
         setTotal(value)
-    }, [cart])
+    }, [cart, total])
 
     function add (item) {
-        const newCart = cart;
-        newCart.push(item);
+        let newCart = cart;
+
+        const extistItem = newCart.find((element) => {
+            return item.id === element.id;
+        })
+        
+        if(extistItem){
+            extistItem.quantidade += item.quantidade;
+        }
+        else{
+            newCart.push(item);
+        }
 
         setCart([...newCart]);
     }

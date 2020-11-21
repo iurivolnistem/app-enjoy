@@ -60,8 +60,11 @@ export default () => {
                 });
             }
             else{
-                alert('Erro', response.mensagem);
+                alert(Object.values(response.erros));
             }
+        }
+        else{
+            alert("Todos os campos devem ser preenchidos!");
         }
     }
 

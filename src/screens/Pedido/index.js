@@ -1,49 +1,49 @@
 import React, {useState, useEffect, useContext} from 'react';
 
 import Api from '../../Api';
-import { Platform, RefreshControl, View, Image, Text } from 'react-native'
+import { Platform, RefreshControl, View, Image, Text, Alert } from 'react-native'
 import { useCart } from '../../contexts/CartContext';
-import {UserContext} from '../../contexts/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import {
-    Container,
-    Scroller,
-    HeaderArea,
-    HeaderTitle,
-    ListArea,
-    ItemArea,
-    Imagem,
-    ItemNome,
-    ItemValor,
-    ItemQuantidade,
-    ItemAreaInfo,
-    AreaButton,
-    ButtonPedido,
-    ButtonPedidoText,
-    AreaTotal,
-    AreaTotalText,
-    AreaPedido,
-    AreaFinalizarPedido,
-    AreaPagamento,
-    VazioMensagemArea,
-    VazioMensagemText, 
-    DeleteItemButton,
-    SelectOpcao,
-    InputTroco
-} from './styles';
+import { Container, HeaderArea, HeaderTitle, MensagemArea, MensagemText, AreaPedido, Scroller, AreaPagamento, AreaSelectPagamento, AreaLabel, AreaSelect, SelectPagamento, AreaFinalizar, AreaTotal, AreaTotalText, ButtonFinalizar, ButtonFinalizarText, InputTroco, ItemArea, ImagemItem, ItemInfo, ItemText, DeleteButton, ItemQuantidadeArea, ButtonQuantidade, ItemQuantidadeText} from './styles';
 
 import RemoveIcon from '../../assets/delete.svg';
+import MinusIcon from '../../assets/remove.svg';
+import PlusIcon from '../../assets/plus.svg';
 
 export default () => {
 
-    const { add, cart, total, remove, removeTodosItems } = useCart();
+    const { add, cart, remove, removeTodosItems } = useCart();
     const {state:user} = useContext(UserContext);
     const [selectedValue, setSelectedValue] = useState('1');
     const [troco, setTroco] = useState('');
+    const [aberto, setAberto] = useState(false);
+    const [carrinho, setCarrinho] = useState(cart);
+    const [total, setTotal] = useState(0);
+
 
     useEffect(() => {
-    }, [cart])
+        checkHorario();
+
+        let value = 0
+        cart.map((item) => {
+            value = value + (item.valor * item.quantidade)
+        })
+        setTotal(value);
+
+    }, [cart, carrinho])
+
+
+    const checkHorario = async () => {
+        let response = await Api.verificarHorario();
+        if(response.status == true){
+            setAberto(true);
+        }
+        else{
+            setAberto(false);
+        }
+    }
 
     const verificarPedidoEnviar = async () => {
         if(selectedValue == '3'){
@@ -88,58 +88,102 @@ export default () => {
         }
     }
 
+    const aumentaQuantidade = (index) => {
+        const currentCart = [...cart];
+        let value = 0;
+        if(currentCart[index].quantidade < 10){
+            currentCart[index].quantidade += 1;
+        }
+        else{
+            Alert.alert("Quantidade excedida", 'Não é possível aumentar a quantidade');
+        }
+        cart.map((item) => {
+            value = value + (item.valor * item.quantidade)
+        })
+        setTotal(value);
+    }
+
+    const diminuiQuantidade = (index) => {
+        const currentCart = [...cart];
+        let value = 0;
+        if(currentCart[index].quantidade > 1){
+            currentCart[index].quantidade -= 1;
+        }
+        else{
+            Alert.alert("Quantidade excedida", 'Não é possível diminuir mais a quantidade');
+        }
+        cart.map((item) => {
+            value = value + (item.valor * item.quantidade)
+        })
+        setTotal(value);
+    }
+
     return (
         <Container>
             <HeaderArea>
                 <HeaderTitle numberOfLines={2}>Sacola</HeaderTitle>
             </HeaderArea>
-            { Object.keys(cart).length > 0 ?
+            {
+                aberto == false ?  
+                <MensagemArea>
+                    <MensagemText>Pedidos só podem serem feitos após as 18:00 horas!</MensagemText>
+                </MensagemArea>
+
+                :
+
                 <AreaPedido>
-                <Scroller>
-                    <ListArea>
-                        {cart.map((item, index) => (
+                    <Scroller>
+                    {
+                        cart.map((item, index) => (
                             <ItemArea key={index}>
-                                <Imagem source={{uri: 'http://10.0.2.2:8000/' + item.imagem}} />
-                                <ItemAreaInfo>
-                                    <ItemNome>{item.nome}</ItemNome>
-                                    <ItemValor>R${item.valor}</ItemValor>
-                                    <ItemQuantidade>Quantidade: {item.quantidade}</ItemQuantidade>
-                                </ItemAreaInfo>
-                                <DeleteItemButton onPress={() => remove(index)}>
-                                    <RemoveIcon width="15" height="15" fill="#FA7921"/>
-                                </DeleteItemButton>
+                                <ImagemItem source={{uri: 'http://10.0.2.2:8000/' + item.imagem}} />
+                                <ItemInfo>
+                                    <ItemText style={{fontSize: 18}}>{item.nome}</ItemText>
+                                    <ItemText style={{color: 'rgb(0, 112, 0)'}}>R${item.valor}</ItemText>
+                                    <ItemQuantidadeArea>
+                                        <ButtonQuantidade onPress={() => diminuiQuantidade(index)}>
+                                            <MinusIcon width="15" height="15" fill="#FA7921" />
+                                        </ButtonQuantidade>
+                                        <ItemQuantidadeText>{item.quantidade}</ItemQuantidadeText>
+                                        <ButtonQuantidade onPress={() => aumentaQuantidade(index)}>
+                                            <PlusIcon width="15" height="15" fill="#FA7921" />
+                                        </ButtonQuantidade>
+                                    </ItemQuantidadeArea>
+                                </ItemInfo>
+                                <DeleteButton>
+                                    <RemoveIcon width="15" height="15" fill="#FA7921" />
+                                </DeleteButton>
                             </ItemArea>
-                        ))}
-                    </ListArea>
-                    
-                    
-                </Scroller>
-                <AreaFinalizarPedido>
-                    <AreaPagamento style={{flexDirection: selectedValue == '3' ? 'row' : 'column'}}>
-                        <SelectOpcao style={{width: selectedValue == '3' ? '55%' : '100%'}} selectedValue={selectedValue} onValueChange={(itemValue, index) => setSelectedValue(itemValue)}>
-                            <SelectOpcao.Item label="Cartão de crédito" value="1"></SelectOpcao.Item>
-                            <SelectOpcao.Item label="Dinheiro sem troco" value="2"></SelectOpcao.Item>
-                            <SelectOpcao.Item label="Dinheiro com troco" value="3"></SelectOpcao.Item>
-                        </SelectOpcao>
-                        {
-                            selectedValue == '3'  &&
-                            <InputTroco style={{width: '45%'}} value={troco} onChangeText={t => setTroco(t)} placeholder="Troco" ></InputTroco>
-                        }
+                        ))
+                    }
+
+                    </Scroller>
+                    <AreaPagamento>
+                        <AreaSelectPagamento>
+                            <AreaLabel>Formas de pagamento</AreaLabel>
+                            <AreaSelect>
+                                <SelectPagamento style={{width: selectedValue == '1' ? '72%' : '52%'}} selectedValue={selectedValue} onValueChange={(itemValue, index) => setSelectedValue(itemValue)}>
+                                    <SelectPagamento.Item label="Cartão de Crédito (entregador)" value="1" />
+                                    <SelectPagamento.Item label="Dinheiro sem troco" value="2"/>
+                                    <SelectPagamento.Item label="Dinheiro com troco" value="3"/>
+                                </SelectPagamento>
+                                {
+                                    selectedValue == '3' &&
+                                    <InputTroco value={troco} onChangeText={t => setTroco(t)} placeholder="Insira seu troco" />
+                                }
+                            </AreaSelect>
+                        </AreaSelectPagamento>
+                        <AreaFinalizar>
+                            <AreaTotal>
+                                <AreaTotalText>R${total.toFixed(2)}</AreaTotalText>
+                            </AreaTotal>
+                            <ButtonFinalizar onPress={verificarPedidoEnviar}>
+                                <ButtonFinalizarText>Finalizar Pedido</ButtonFinalizarText>
+                            </ButtonFinalizar>
+                        </AreaFinalizar>
                     </AreaPagamento>
-                    <AreaButton>
-                        <AreaTotal>
-                            <AreaTotalText>Total: R${total.toFixed(2)}</AreaTotalText>
-                        </AreaTotal>
-                        <ButtonPedido onPress={verificarPedidoEnviar}>
-                            <ButtonPedidoText>Finalizar Pedido</ButtonPedidoText>
-                        </ButtonPedido>
-                    </AreaButton>
-                </AreaFinalizarPedido>
-            </AreaPedido>
-            :
-            <VazioMensagemArea>
-                <VazioMensagemText>Você ainda não tem produtos no carrinho :(</VazioMensagemText>
-            </VazioMensagemArea>
+                </AreaPedido>
+                
             }
         </Container>
     );

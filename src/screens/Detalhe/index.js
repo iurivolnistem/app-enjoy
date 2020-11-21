@@ -130,7 +130,7 @@ export default () => {
                 <AreaFormaPagamentoText>Pagamento</AreaFormaPagamentoText>
                 <AreaFormaPagamentoText>
                     {
-                        itemPedido.pagamento == 1 ? 'Cartão de crédito' : itemPedido.pagamento == 2 ? 'Dinheiro sem troco' : itemPedido.pagamento == 3 ? 'Dinheiro com troco' : '' 
+                        itemPedido.pagamento == 1 ? 'Cartão de crédito (entregador)' : itemPedido.pagamento == 2 ? 'Dinheiro sem troco' : itemPedido.pagamento == 3 ? 'Dinheiro com troco' : '' 
                     }
                 </AreaFormaPagamentoText>
             </AreaFormaPagamento>
