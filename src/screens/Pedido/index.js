@@ -130,8 +130,8 @@ export default () => {
                     <MensagemText>Pedidos só podem serem feitos após as 18:00 horas!</MensagemText>
                 </MensagemArea>
 
-                :
-
+                : Object.keys(cart).length > 0 ?
+                
                 <AreaPedido>
                     <Scroller>
                     {
@@ -151,7 +151,7 @@ export default () => {
                                         </ButtonQuantidade>
                                     </ItemQuantidadeArea>
                                 </ItemInfo>
-                                <DeleteButton>
+                                <DeleteButton onPress={() => remove(index)}>
                                     <RemoveIcon width="15" height="15" fill="#FA7921" />
                                 </DeleteButton>
                             </ItemArea>
@@ -159,32 +159,38 @@ export default () => {
                     }
 
                     </Scroller>
-                    <AreaPagamento>
-                        <AreaSelectPagamento>
-                            <AreaLabel>Formas de pagamento</AreaLabel>
-                            <AreaSelect>
-                                <SelectPagamento style={{width: selectedValue == '1' ? '72%' : '52%'}} selectedValue={selectedValue} onValueChange={(itemValue, index) => setSelectedValue(itemValue)}>
-                                    <SelectPagamento.Item label="Cartão de Crédito (entregador)" value="1" />
-                                    <SelectPagamento.Item label="Dinheiro sem troco" value="2"/>
-                                    <SelectPagamento.Item label="Dinheiro com troco" value="3"/>
-                                </SelectPagamento>
-                                {
-                                    selectedValue == '3' &&
-                                    <InputTroco value={troco} onChangeText={t => setTroco(t)} placeholder="Insira seu troco" />
-                                }
-                            </AreaSelect>
-                        </AreaSelectPagamento>
-                        <AreaFinalizar>
-                            <AreaTotal>
-                                <AreaTotalText>R${total.toFixed(2)}</AreaTotalText>
-                            </AreaTotal>
-                            <ButtonFinalizar onPress={verificarPedidoEnviar}>
-                                <ButtonFinalizarText>Finalizar Pedido</ButtonFinalizarText>
-                            </ButtonFinalizar>
-                        </AreaFinalizar>
-                    </AreaPagamento>
-                </AreaPedido>
-                
+                <AreaPagamento>
+                    <AreaSelectPagamento>
+                        <AreaLabel>Formas de pagamento</AreaLabel>
+                        <AreaSelect>
+                            <SelectPagamento style={{width: selectedValue == '1' ? '72%' : '52%'}} selectedValue={selectedValue} onValueChange={(itemValue, index) => setSelectedValue(itemValue)}>
+                                <SelectPagamento.Item label="Cartão de Crédito (entregador)" value="1" />
+                                <SelectPagamento.Item label="Dinheiro sem troco" value="2"/>
+                                <SelectPagamento.Item label="Dinheiro com troco" value="3"/>
+                            </SelectPagamento>
+                            {
+                                selectedValue == '3' &&
+                                <InputTroco value={troco} onChangeText={t => setTroco(t)} placeholder="Insira seu troco" />
+                            }
+                        </AreaSelect>
+                    </AreaSelectPagamento>
+                    <AreaFinalizar>
+                        <AreaTotal>
+                            <AreaTotalText>R${total.toFixed(2)}</AreaTotalText>
+                        </AreaTotal>
+                        <ButtonFinalizar onPress={verificarPedidoEnviar}>
+                            <ButtonFinalizarText>Finalizar Pedido</ButtonFinalizarText>
+                        </ButtonFinalizar>
+                    </AreaFinalizar>
+                </AreaPagamento>
+            </AreaPedido>
+
+            :
+            
+            <MensagemArea>
+                <MensagemText>Desculpe, você ainda não tem itens na sacola :(</MensagemText>
+            </MensagemArea>
+
             }
         </Container>
     );
