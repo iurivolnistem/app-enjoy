@@ -51,7 +51,7 @@ export default () => {
                 enviarPedido()
             }
             else{
-                alert('O campo de troco precisa ser maior que o valor do pedido');
+                Alert.alert('Troco inválido','O campo de troco precisa ser maior que o valor do pedido');
             }
         }
         else{
@@ -81,10 +81,11 @@ export default () => {
         let response = await Api.sendPedido(pedido);
         if(response.error == ''){
             removeTodosItems();
-            alert('Pedido Enviado!');
+            Alert.alert('Pedido Enviado!', 'Seu pedido foi enviado com sucesso, acompanhe-o pela tela de pedidos.');
+            setTroco('');
         }
         else{
-            alert(response.mensagem);
+            Alert.alert('Erro ao fazer pedido',response.mensagem);
         }
     }
 

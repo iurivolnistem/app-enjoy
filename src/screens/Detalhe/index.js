@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
-import {View} from 'react-native'
+import {Alert, View} from 'react-native'
 import {useNavigation, useRoute} from '@react-navigation/native';
 import MomentTz from 'moment-timezone';
 import Moment from 'moment/min/moment-with-locales';
@@ -25,16 +25,16 @@ export default () => {
     const getPedido = async() => {
         setLoading(true);
         setPedido([]);
+        setListaProdutos([]);
 
         let response = await Api.getPedido(route.params.id);
         if(response.error == ''){
             setPedido(response.pedido)
-            response.pedido.produtos.map((item, index) => {
-                listaProdutos.push(item);
-            })
+
+            setListaProdutos(Object.values(response.pedido.produtos))
         }
         else{
-            alert(response.mensagem)
+            Alert.alert('Ocorreu algum erro',response.mensagem)
         }
         setLoading(false);
     }
@@ -65,7 +65,7 @@ export default () => {
 
     const confirmarEntrega = async (pedidoID) => {
         let res = await Api.confirmaEntrega(pedidoID);
-        alert(res.mensagem);
+        Alert.alert('Obrigado pelo feedback',res.mensagem);
         getPedido();
     }
 
@@ -94,7 +94,7 @@ export default () => {
                     </PedidoEntregueArea>
                     :
                     <PedidoEntregueArea>
-                        <PedidoAreaText>{itemPedido.status == 0 ? 'Aguardando' : itemPedido.status == 1 ? 'Preparando' : ''}</PedidoAreaText>
+                        <PedidoAreaText>{itemPedido.status == 0 ? 'Aguardando' : itemPedido.status == 1 ? 'Preparando' : itemPedido.status == 4 ? 'Cancelado' : 'Devolução'}</PedidoAreaText>
                     </PedidoEntregueArea>
                     
                 }
@@ -130,7 +130,7 @@ export default () => {
                 <AreaFormaPagamentoText>Pagamento</AreaFormaPagamentoText>
                 <AreaFormaPagamentoText>
                     {
-                        itemPedido.pagamento == 1 ? 'Cartão de crédito (entregador)' : itemPedido.pagamento == 2 ? 'Dinheiro sem troco' : itemPedido.pagamento == 3 ? 'Dinheiro com troco' : '' 
+                        itemPedido.pagamento == 1 ? 'Cartão de crédito (entregador)' : itemPedido.pagamento == 2 ? 'Dinheiro sem troco' : itemPedido.pagamento == 3 ? 'Dinheiro com troco' : 'Outro' 
                     }
                 </AreaFormaPagamentoText>
             </AreaFormaPagamento>
