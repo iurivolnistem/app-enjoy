@@ -3,7 +3,7 @@ import {Alert, View} from 'react-native'
 import {useNavigation, useRoute} from '@react-navigation/native';
 import MomentTz from 'moment-timezone';
 import Moment from 'moment/min/moment-with-locales';
-import { Container, HeaderArea, BackButtom, HeaderText, LoadingIcon, StatusArea, PedidoDataText, PedidoEntregueArea, PedidoAreaText, NumeroPedidoArea, NumeroPedidoText, Scroller, ItemArea, ItemQuantidade, ItemNome, ItemValor, PedidoArea, AreaPagamento, ItemSubtotal, ItemTotal, AreaFormaPagamento, AreaFormaPagamentoText, ItemText, ItemTextBold, ConfirmaEntregaButton } from './styles';
+import { Container, HeaderArea, BackButtom, HeaderText, LoadingIcon, StatusArea, PedidoDataText, PedidoEntregueArea, PedidoAreaText, NumeroPedidoArea, NumeroPedidoText, Scroller, ItemArea, ItemQuantidade, ItemNome, ItemValor, PedidoArea, AreaPagamento, ItemSubtotal, ItemTotal, AreaFormaPagamento, AreaFormaPagamentoText, ItemText, ItemTextBold, ConfirmaEntregaButton, AreaCancelar, ButtonCancelar, ButtonCancelarText } from './styles';
 
 import Api from '../../Api';
 
@@ -69,6 +69,17 @@ export default () => {
         getPedido();
     }
 
+    const cancelarEntrega = async (pedidoID) => {
+        let res = await Api.cancelarPedido(pedidoID);
+        if(res.error == ''){
+            Alert.alert('Pedido cancelado', res.mensagem);
+        }
+        else{
+            Alert.alert('Erro ao cancelar', res.mensagem);
+        }
+        getPedido();
+    }
+
     return(
         <Container>
             <Scroller>
@@ -82,19 +93,29 @@ export default () => {
                 <PedidoDataText>Realizado {formatarDataRealizado(itemPedido.created_at)}</PedidoDataText>
                 {
                     itemPedido.status == 3 ?
-                    <PedidoEntregueArea>
-                        <CheckedIcon width="20" height="20" fill="#63A088" />
-                        <PedidoAreaText>Pedido concluido às {formataDatatoHora(itemPedido.updated_at)}</PedidoAreaText>
+                    <PedidoEntregueArea style={{backgroundColor: '#EEF0F2'}}>
+                        <CheckedIcon width="20" height="20" fill="#63A088" style={{marginLeft: 10}} />
+                        <PedidoAreaText style={{backgroundColor: '#EEF0F2', padding: 0, marginBottom: 0}}>Pedido concluido às {formataDatatoHora(itemPedido.updated_at)}</PedidoAreaText>
                     </PedidoEntregueArea>
                     : itemPedido.status == 2 ?
                     <PedidoEntregueArea>
-                        <ConfirmaEntregaButton onPress={() => confirmarEntrega(itemPedido.id) }>
-                            <PedidoAreaText style={{color: '#63A088', fontWeight: 'bold'}}>Confirmar Entrega</PedidoAreaText>
+                        <ConfirmaEntregaButton onPress={() => confirmarEntrega(itemPedido.id) } style={{width: '100%'}}>
+                            <PedidoAreaText style={{backgroundColor: '#EEF0F2', color: '#63A088', fontWeight: 'bold'}}>Confirmar Entrega</PedidoAreaText>
                         </ConfirmaEntregaButton>
                     </PedidoEntregueArea>
                     :
-                    <PedidoEntregueArea>
-                        <PedidoAreaText>{itemPedido.status == 0 ? 'Aguardando' : itemPedido.status == 1 ? 'Preparando' : itemPedido.status == 4 ? 'Cancelado' : 'Devolução'}</PedidoAreaText>
+                    <PedidoEntregueArea style={{flexDirection: 'column'}}>
+                        <PedidoAreaText style={{backgroundColor: '#EEF0F2', width: '100%'}}>{itemPedido.status == 0 ? 'Aguardando' : itemPedido.status == 1 ? 'Preparando' : itemPedido.status == 4 ? 'Cancelado' : 'Devolução'}</PedidoAreaText>
+                        {
+                        itemPedido.status == 0 || itemPedido.status == 1 ?
+                        <AreaCancelar>
+                            <ButtonCancelar onPress={() => cancelarEntrega(itemPedido.id) }>
+                                <ButtonCancelarText style={{width: '100%'}}>Cancelar Pedido</ButtonCancelarText>
+                            </ButtonCancelar>
+                        </AreaCancelar>
+                        :
+                        <AreaCancelar></AreaCancelar>
+                        }
                     </PedidoEntregueArea>
                     
                 }

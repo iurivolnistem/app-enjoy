@@ -10,16 +10,21 @@ import {
     HeaderArea,
     HeaderTitle,
     LoadingIcon,
-    ListArea
+    ListArea, 
+    SearchArea,
+    InputSearch,
+    ButtonSearch
 } from './styles';
 
 import MyLocationIcon from '../../assets/my_location.svg';
+import SearchIcon from '../../assets/search.svg';
 
 export default () => {
 
     const [loading, setLoading] = useState(false);
     const [listaProdutos, setListaProdutos] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
+    const [pesquisa, setPesquisa] = useState('');
 
     const getProdutos = async () => {
         setLoading(true);
@@ -45,11 +50,23 @@ export default () => {
         getProdutos();
     }
 
+    const listaFiltro = (listaProdutos) => {
+        return listaProdutos.filter(item => item.nome.toLowerCase().includes(pesquisa.toLowerCase()));
+    }
+
     return (
         <Container>
             <HeaderArea>
                 <HeaderTitle numberOfLines={2}>Produtos</HeaderTitle>
             </HeaderArea>
+
+            <SearchArea>
+                <InputSearch placeholder="Procure um produto" value={pesquisa} onChangeText={t => setPesquisa(t)}></InputSearch>
+                <ButtonSearch>
+                    <SearchIcon width="20" height="20" fill="#FA7921" />
+                </ButtonSearch>
+            </SearchArea>
+
             <Scroller refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
 
                 {loading &&
@@ -57,9 +74,11 @@ export default () => {
                 }
 
                 <ListArea>
-                    {listaProdutos.map((item, index) => (
-                        <ProdutoItem key={index} data={item}/>
-                    ))}
+                    {
+                        listaFiltro(listaProdutos).map((item, index) => (
+                            <ProdutoItem key={index} data={item}/>
+                        ))
+                    }
                 </ListArea>
             </Scroller>
         </Container>

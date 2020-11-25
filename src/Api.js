@@ -211,7 +211,19 @@ export default {
         });
         const json = await req.json();
         return json;
-    }, 
+    },
+
+    cancelarPedido: async (pedidoID) => {
+        const req = await fetch(`${BASE_API}/cancelar/pedido/${pedidoID}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+        });
+        const json = await req.json();
+        return json;
+    },
 
     verificarHorario: async () => {
         const req = await fetch(`${BASE_API}/verificar/horario`, {

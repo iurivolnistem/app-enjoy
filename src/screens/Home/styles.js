@@ -33,3 +33,25 @@ export const ListArea = styled.View`
     margin-top: 20px;
     margin-bottom: 20px;
 `;
+
+export const SearchArea  = styled.View`
+    margin: 0 15px;
+    height: 60px;
+    padding: 0 15px;
+    flex-direction: row;
+    border-radius: 30px;
+    align-items: center;
+    margin-bottom: 15px;
+    justify-content: space-between;
+    border: 0.5px solid #000;
+`;
+
+export const InputSearch = styled.TextInput`
+    height: 40px;
+    padding: 10px;
+`;
+
+export const ButtonSearch = styled.TouchableOpacity`
+    width: 20px;
+    height: 20px;
+`;

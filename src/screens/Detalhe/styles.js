@@ -43,7 +43,6 @@ export const PedidoDataText = styled.Text`
 
 export const PedidoEntregueArea = styled.View`
     width: 100%;
-    background-color: #EEF0F2;
     padding: 10px;
     flex-direction: row;
     justify-content: center;
@@ -54,7 +53,10 @@ export const PedidoEntregueArea = styled.View`
 `;
 
 export const PedidoAreaText = styled.Text`
-    margin-left: 5px;
+    padding: 10px;
+    text-align: center;
+    border-radius:5px;
+    margin-bottom: 10px;
 `;
 
 export const NumeroPedidoArea = styled.View`
@@ -134,3 +136,14 @@ export const AreaFormaPagamento = styled.View`
 export const AreaFormaPagamentoText = styled.Text``;
 
 export const ConfirmaEntregaButton = styled.TouchableOpacity``;
+
+export const AreaCancelar = styled.View`
+    width: 100%;
+    justify-content: flex-end;
+    align-items: flex-end;
+`; 
+export const ButtonCancelar = styled.TouchableOpacity``;
+
+export const ButtonCancelarText = styled.Text`
+    color: red;
+`;
